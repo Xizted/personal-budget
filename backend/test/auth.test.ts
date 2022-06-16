@@ -136,6 +136,7 @@ describe('When register', () => {
 
   afterAll(() => {
     server.close();
+    prisma.$disconnect();
   });
 });
 
@@ -182,5 +183,10 @@ describe('When login', () => {
       password: '321',
     };
     await api.post('/api/v1/auth/login').send(user).expect(401);
+  });
+
+  afterAll(() => {
+    server.close();
+    prisma.$disconnect();
   });
 });
