@@ -138,3 +138,49 @@ describe('When register', () => {
     server.close();
   });
 });
+
+describe('When login', () => {
+  test('Respond with code status 200 and return token', async () => {
+    const user = {
+      email: 'email1@gmail.com',
+      password: '123',
+    };
+    const resp = await api
+      .post('/api/v1/auth/login')
+      .send(user)
+      .expect(200)
+      .expect('Content-Type', /application\/json/);
+
+    expect(resp.body.token).not.toBeUndefined();
+  });
+
+  test('Respond with code status 422 if email is not send', async () => {
+    const user = {
+      password: '123',
+    };
+    await api.post('/api/v1/auth/login').send(user).expect(422);
+  });
+
+  test('Respond with code status 422 if password is not send', async () => {
+    const user = {
+      email: 'email1@gmail.com',
+    };
+    await api.post('/api/v1/auth/login').send(user).expect(422);
+  });
+
+  test('Respond with code status 401 if email is not correct', async () => {
+    const user = {
+      email: 'email30@gmail.com',
+      password: '123',
+    };
+    await api.post('/api/v1/auth/login').send(user).expect(401);
+  });
+
+  test('Respond with code status 401 if password is not correct', async () => {
+    const user = {
+      email: 'email1@gmail.com',
+      password: '321',
+    };
+    await api.post('/api/v1/auth/login').send(user).expect(401);
+  });
+});
