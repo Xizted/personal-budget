@@ -9,7 +9,8 @@
     "build": "tsc",
     "eslint": "eslint .",
     "jest": "NODE_ENV=test jest --verbose --silent",
-    "jest:watch": "yarn jest --watch"
+    "jest:watch": "yarn jest --watch",
+    "seed": "ts-node prisma/seed.ts"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.18.2",
@@ -51,5 +52,8 @@
     "env": {
       "jest": true
     }
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
   }
 }
