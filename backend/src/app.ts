@@ -6,6 +6,8 @@ import usersRoutes from './routes/users';
 import categoriesRoutes from './routes/categories';
 import errorHandler from './middleware/errorHandler';
 import notFound from './middleware/notFound';
+import prisma from './db/db';
+import verifyToken from './middleware/verifyToken';
 
 const app = express();
 
@@ -22,7 +24,7 @@ app.get('/ping', (req, res) => {
 
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/users', usersRoutes);
-app.use('/api/v1/categories', categoriesRoutes);
+app.use('/api/v1/categories', verifyToken, categoriesRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
