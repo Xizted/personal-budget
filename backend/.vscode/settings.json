@@ -51,5 +51,6 @@
   ],
   "[prisma]": {
     "editor.defaultFormatter": "Prisma.prisma"
+    // "editor.defaultFormatter": "Prisma.prisma"
   }
 }

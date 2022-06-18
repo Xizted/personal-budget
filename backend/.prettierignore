@@ -1,3 +1,5 @@
 # Ignore all YAML files:
 *.yml
 *.gql.ts
+
+prisma/schema.prisma

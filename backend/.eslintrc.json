@@ -29,11 +29,5 @@
         "checksVoidReturn": false
       }
     ]
-  },
-  "overrides": [
-    {
-      "files": ["test/**/*.ts"],
-      "env": { "jest": true, "node": true }
-    }
-  ]
+  }
 }
