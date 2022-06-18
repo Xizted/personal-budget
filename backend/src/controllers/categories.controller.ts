@@ -1,12 +1,8 @@
-import { NextFunction, Request, Response } from 'express';
-import prisma from '../db/db';
+import { Request, Response } from 'express';
+import CategoryServices from '../services/category.services';
 
-const getCategories = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const categories = await prisma.category.findMany({});
+const getCategories = async (_: Request, res: Response) => {
+  const categories = await CategoryServices.getCategories();
 
   res.status(200).send(categories);
 };
