@@ -1,7 +1,7 @@
 import { Type } from '@prisma/client';
 import prisma from '../db/db';
 
-interface createTransactionProps {
+interface createTransactionValues {
   id?: number;
   amount: string;
   concept: string;
@@ -33,7 +33,7 @@ const createTransaction = async ({
   type,
   categoryId,
   userId,
-}: createTransactionProps) =>
+}: createTransactionValues) =>
   await prisma.transaction.create({
     data: {
       amount: parseFloat(amount),
@@ -59,7 +59,7 @@ const updatedTransactions = async ({
   date,
   type,
   categoryId,
-}: createTransactionProps) =>
+}: createTransactionValues) =>
   await prisma.transaction.update({
     where: {
       id,

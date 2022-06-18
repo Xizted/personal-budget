@@ -46,6 +46,6 @@
     "morgan": "^1.10.0"
   },
   "prisma": {
-    "seed": "yarn jest && yarn seed"
+    "seed": "ts-node prisma/seed.ts"
   }
 }
