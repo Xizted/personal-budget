@@ -2,15 +2,15 @@ import { NextFunction, Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import prisma from '../db/db';
+import { UserCreateSchema } from '../schemas/createOneUser.schema';
+import { ValidateLogin } from '../schemas/validateLogin.schema';
 
 const createUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { username, password, email } = req.body;
-    if (!password) {
-      const e = new Error('Argument password for data.password is missing');
-      e.name = 'PASSWORD_NOT_SEND';
-      next(e);
-    }
+    const { body } = req;
+    UserCreateSchema.parse(body);
+    const { username, password, email } = body;
+
     const passwordHash = await bcrypt.hash(password, 10);
     const newUser = await prisma.user.create({
       data: {
@@ -28,23 +28,18 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
 
 const login = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { email, password } = req.body;
-
-    if (!email) {
-      return res.status(422).send({
-        error: 'Argument email is missing',
-      });
-    }
-
-    if (!password) {
-      return res.status(422).send({
-        error: 'Argument password is missing',
-      });
-    }
+    const { body } = req;
+    ValidateLogin.parse(body);
+    const { email, password } = body;
 
     const user = await prisma.user.findUnique({
       where: {
         email,
+      },
+      select: {
+        id: true,
+        passwordHash: true,
+        email: true,
       },
     });
 

@@ -1,10 +1,14 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
-type JwtPayload = {
+interface JwtPayload extends jwt.JwtPayload {
   id: number;
   username: string;
-};
+}
+
+interface RequestMiddleware extends Request {
+  userId: number;
+}
 
 export default (req: Request, res: Response, next: NextFunction) => {
   const auth = req.get('authorization');
@@ -20,5 +24,7 @@ export default (req: Request, res: Response, next: NextFunction) => {
   if (!token || !decodedToken.id) {
     return res.status(401).json({ error: 'Token missiong or invalid' });
   }
+
+  (req as RequestMiddleware).userId = decodedToken.id;
   next();
 };
