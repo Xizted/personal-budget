@@ -49,11 +49,9 @@ const updatedTransactions = async (
     const { body } = req;
     TransactionCreateSchema.parse(body);
     body.id = id;
-    const transactionUpdated = await TransactionService.updatedTransactions(
-      body
-    );
+    await TransactionService.updatedTransactions(body);
 
-    res.status(200).send(transactionUpdated);
+    res.status(204).end();
   } catch (error) {
     console.log(error);
     next(error);

@@ -11,8 +11,8 @@ interface createTransactionProps {
   userId: number;
 }
 
-const getTransactions = async (userId: number) => {
-  return await prisma.transaction.findMany({
+const getTransactions = async (userId: number) =>
+  await prisma.transaction.findMany({
     where: {
       userId,
     },
@@ -25,7 +25,6 @@ const getTransactions = async (userId: number) => {
       category: true,
     },
   });
-};
 
 const createTransaction = async ({
   amount,
@@ -34,8 +33,8 @@ const createTransaction = async ({
   type,
   categoryId,
   userId,
-}: createTransactionProps) => {
-  return await prisma.transaction.create({
+}: createTransactionProps) =>
+  await prisma.transaction.create({
     data: {
       amount: parseFloat(amount),
       concept,
@@ -52,7 +51,6 @@ const createTransaction = async ({
       type: true,
     },
   });
-};
 
 const updatedTransactions = async ({
   id,
@@ -61,8 +59,8 @@ const updatedTransactions = async ({
   date,
   type,
   categoryId,
-}: createTransactionProps) => {
-  return await prisma.transaction.update({
+}: createTransactionProps) =>
+  await prisma.transaction.update({
     where: {
       id,
     },
@@ -82,15 +80,13 @@ const updatedTransactions = async ({
       category: true,
     },
   });
-};
 
-const deletedTransactions = async (id: number) => {
-  return await prisma.transaction.delete({
+const deletedTransactions = async (id: number) =>
+  await prisma.transaction.delete({
     where: {
       id,
     },
   });
-};
 
 export default {
   getTransactions,

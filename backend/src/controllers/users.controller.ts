@@ -1,16 +1,7 @@
 import { Request, Response } from 'express';
-import prisma from '../db/db';
-
-const getUsers = async (req: Request, res: Response) => {
-  const users = await prisma.user.findMany({
-    select: {
-      id: true,
-      username: true,
-      email: true,
-      create_at: true,
-      update_at: true,
-    },
-  });
+import UserServices from '../services/user.services';
+const getUsers = async (_: Request, res: Response) => {
+  const users = await UserServices.getsUsers();
   res.status(200).send(users);
 };
 
