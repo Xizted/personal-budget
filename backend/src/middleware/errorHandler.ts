@@ -3,63 +3,21 @@ import {
   PrismaClientKnownRequestError,
   PrismaClientValidationError,
 } from '@prisma/client/runtime';
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { ZodError } from 'zod';
+import ERROR_HANDLER from './errors/Error';
+import PRISMA_ERROR_HANDLER from './errors/PrismaError';
 
-type PrismaError = PrismaClientKnownRequestError | PrismaClientValidationError;
-
-type PrismaErrorHandler = {
-  [key: string]: (error: PrismaClientKnownRequestError, res: Response) => void;
-};
-
-type ErroHandler = {
-  [key: string]: (error: Error, res: Response) => void;
-};
-
-const ERROR_HANDLER: ErroHandler = {
-  PASSWORD_NOT_SEND: (error: Error, res: Response) => {
-    res.status(422).send({ error: error.message });
-  },
-  DEFAULT_ERROR: (error: Error, res: Response) => {
-    res.status(500).send({ error: error.message, name: error.name });
-  },
-};
-
-const PRISMA_ERROR_HANDLER: PrismaErrorHandler = {
-  P2002: (error: PrismaClientKnownRequestError, res: Response) => {
-    const field: string | unknown =
-      error.meta?.target !== undefined ? error.meta.target : '';
-
-    res.status(400).send({
-      error: `The ${field} field must be unique`,
-    });
-  },
-
-  P2025: (error: PrismaClientKnownRequestError, res: Response) => {
-    const message: string | unknown =
-      error.meta?.cause !== undefined ? error.meta.cause : '';
-
-    res.status(404).send({
-      error: message,
-    });
-  },
-
-  DEFAULT_ERROR: (error: PrismaClientKnownRequestError, res: Response) => {
-    console.log('owo');
-    res.status(500).send({ error: error.message, name: error.name });
-  },
-};
+type PrismaError =
+  | PrismaClientKnownRequestError
+  | PrismaClientValidationError
+  | PrismaClientKnownRequestError
+  | PrismaClientValidationError;
 
 export default (
-  error:
-    | Error
-    | PrismaError
-    | PrismaClientKnownRequestError
-    | PrismaClientValidationError
-    | ZodError,
-  req: Request,
-  res: Response,
-  next: NextFunction
+  error: Error | PrismaError | ZodError,
+  _: Request,
+  res: Response
 ) => {
   let handler = undefined;
   if (error instanceof PrismaClientKnownRequestError) {
