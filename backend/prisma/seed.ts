@@ -1,9 +1,15 @@
 import { PrismaClient } from '@prisma/client';
-import { categories, transactions } from './data';
+import { categories, transactions, newUser } from './data';
 const prisma = new PrismaClient();
 
 const load = async () => {
   try {
+    await prisma.$queryRaw`ALTER SEQUENCE "User_id_seq" RESTART WITH 1;`;
+    await prisma.user.deleteMany({});
+    console.log('Deleted records in user table 🚮');
+    await prisma.user.create({ data: newUser });
+    console.log('Added user data ♻');
+
     await prisma.$queryRaw`ALTER SEQUENCE "Category_id_seq" RESTART WITH 1;`;
     await prisma.category.deleteMany({});
     console.log('Deleted records in category table 🚮');

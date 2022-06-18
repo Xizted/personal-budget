@@ -1,3 +1,5 @@
+import bcrypt from 'bcrypt';
+
 const categories = [
   {
     name: 'Food',
@@ -70,4 +72,10 @@ const transactions: any[] = [
   },
 ];
 
-export { categories, transactions };
+const newUser = {
+  username: 'Test',
+  passwordHash: bcrypt.hashSync('123', 10),
+  email: 'test@test.com',
+};
+
+export { categories, transactions, newUser };
