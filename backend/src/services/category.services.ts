@@ -1,6 +1,6 @@
-import prisma from '../db/db';
+import db from '../db/db';
 
-const getCategories = async () => await prisma.category.findMany({});
+const getCategories = async () => await db.category.findMany({});
 
 export default {
   getCategories,

@@ -1,5 +1,5 @@
 import { Type } from '@prisma/client';
-import prisma from '../db/db';
+import db from '../db/db';
 
 interface createTransactionValues {
   id?: number;
@@ -12,7 +12,7 @@ interface createTransactionValues {
 }
 
 const getTransactions = async (userId: number) =>
-  await prisma.transaction.findMany({
+  await db.transaction.findMany({
     where: {
       userId,
     },
@@ -34,7 +34,7 @@ const createTransaction = async ({
   categoryId,
   userId,
 }: createTransactionValues) =>
-  await prisma.transaction.create({
+  await db.transaction.create({
     data: {
       amount: parseFloat(amount),
       concept,
@@ -60,7 +60,7 @@ const updatedTransactions = async ({
   type,
   categoryId,
 }: createTransactionValues) =>
-  await prisma.transaction.update({
+  await db.transaction.update({
     where: {
       id,
     },
@@ -82,7 +82,7 @@ const updatedTransactions = async ({
   });
 
 const deletedTransactions = async (id: number) =>
-  await prisma.transaction.delete({
+  await db.transaction.delete({
     where: {
       id,
     },

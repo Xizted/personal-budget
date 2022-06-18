@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import prisma from '../db/db';
+import db from '../db/db';
 import jwt from 'jsonwebtoken';
 
 interface RegisterValues {
@@ -16,7 +16,7 @@ interface LoginValues {
 const register = async ({ username, password, email }: RegisterValues) => {
   const passwordHash = await bcrypt.hash(password, 10);
 
-  await prisma.user.create({
+  await db.user.create({
     data: {
       username,
       passwordHash,
@@ -26,7 +26,7 @@ const register = async ({ username, password, email }: RegisterValues) => {
 };
 
 const login = async ({ email, password }: LoginValues) => {
-  const user = await prisma.user.findUnique({
+  const user = await db.user.findUnique({
     where: {
       email,
     },

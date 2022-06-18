@@ -1,7 +1,7 @@
-import prisma from '../db/db';
+import db from '../db/db';
 
 const getsUsers = async () =>
-  await prisma.user.findMany({
+  await db.user.findMany({
     select: {
       id: true,
       username: true,
