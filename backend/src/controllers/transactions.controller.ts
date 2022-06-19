@@ -14,7 +14,17 @@ const getTransactions = async (
 ) => {
   try {
     const userId = (req as RequestMiddleware).userId;
-    const transactions = await TransactionService.getTransactions(userId);
+    const filter = req.query.filter
+      ? parseInt(req.query.filter.toString())
+      : undefined;
+    const page = req.query.page ? parseInt(req.query.page.toString()) : 0;
+    const limit = req.query.limit ? parseInt(req.query.limit.toString()) : 10;
+    const transactions = await TransactionService.getTransactions(
+      userId,
+      filter,
+      page,
+      limit
+    );
     res.status(200).send(transactions);
   } catch (error) {
     next(error);

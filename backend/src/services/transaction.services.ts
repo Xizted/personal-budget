@@ -11,10 +11,23 @@ interface createTransactionValues {
   userId: number;
 }
 
-const getTransactions = async (userId: number) =>
+const getTransactions = async (
+  userId: number,
+  filter: number | undefined,
+  page: number | undefined,
+  limit: number | undefined
+) =>
   await db.transaction.findMany({
     where: {
-      userId,
+      user: {
+        id: userId,
+      },
+      category: {
+        id: filter,
+      },
+    },
+    orderBy: {
+      id: 'desc',
     },
     select: {
       id: true,
@@ -24,6 +37,8 @@ const getTransactions = async (userId: number) =>
       type: true,
       category: true,
     },
+    skip: page,
+    take: limit,
   });
 
 const createTransaction = async ({
